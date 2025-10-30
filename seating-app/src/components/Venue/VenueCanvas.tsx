@@ -1,10 +1,15 @@
-import React from 'react';
+import { useState } from 'react';
 import { useVenueStore } from '../../store/venueStore';
 import { Table } from '../Table/Table';
+import { TableModal } from '../Table/TableModal';
+import { ChairModal } from '../Chair/ChairModal';
+import type { Table as TableType, Chair as ChairType } from '../../types';
 import styles from './VenueCanvas.module.css';
 
 export const VenueCanvas: React.FC = () => {
   const { tables } = useVenueStore();
+  const [selectedTable, setSelectedTable] = useState<TableType | null>(null);
+  const [selectedChair, setSelectedChair] = useState<ChairType | null>(null);
 
   return (
     <div className={styles.canvas}>
@@ -29,7 +34,12 @@ export const VenueCanvas: React.FC = () => {
 
         {/* テーブル */}
         {tables.map((table) => (
-          <Table key={table.id} table={table} />
+          <Table
+            key={table.id}
+            table={table}
+            onTableClick={setSelectedTable}
+            onChairClick={setSelectedChair}
+          />
         ))}
       </svg>
 
@@ -37,6 +47,23 @@ export const VenueCanvas: React.FC = () => {
         <div className={styles.emptyMessage}>
           左側のツールバーから<br />テーブルを追加してください
         </div>
+      )}
+
+      {/* モーダル（SVGの外） */}
+      {selectedTable && (
+        <TableModal
+          table={selectedTable}
+          isOpen={true}
+          onClose={() => setSelectedTable(null)}
+        />
+      )}
+
+      {selectedChair && (
+        <ChairModal
+          chair={selectedChair}
+          isOpen={true}
+          onClose={() => setSelectedChair(null)}
+        />
       )}
     </div>
   );

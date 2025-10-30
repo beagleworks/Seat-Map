@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import type { Table as TableType } from '../../types';
+import type { Table as TableType, Chair as ChairType } from '../../types';
 import { useVenueStore } from '../../store/venueStore';
 import { Chair } from '../Chair/Chair';
-import { TableModal } from './TableModal';
 import {
   CIRCLE_TABLE_RADIUS,
   RECT_TABLE_WIDTH,
@@ -12,18 +11,19 @@ import {
 
 interface TableProps {
   table: TableType;
+  onTableClick: (table: TableType) => void;
+  onChairClick: (chair: ChairType) => void;
 }
 
-export const Table: React.FC<TableProps> = ({ table }) => {
+export const Table: React.FC<TableProps> = ({ table, onTableClick, onChairClick }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [showModal, setShowModal] = useState(false);
   const updateTablePosition = useVenueStore((state) => state.updateTablePosition);
 
   const handleMouseDown = (e: React.MouseEvent<SVGGElement>) => {
     // ダブルクリックでモーダルを開く
     if (e.detail === 2) {
-      setShowModal(true);
+      onTableClick(table);
       return;
     }
 
@@ -120,17 +120,8 @@ export const Table: React.FC<TableProps> = ({ table }) => {
 
       {/* 椅子 */}
       {table.chairs.map((chair) => (
-        <Chair key={chair.id} chair={chair} table={table} />
+        <Chair key={chair.id} chair={chair} table={table} onChairClick={onChairClick} />
       ))}
-
-      {/* モーダル */}
-      {showModal && (
-        <TableModal
-          table={table}
-          isOpen={showModal}
-          onClose={() => setShowModal(false)}
-        />
-      )}
     </>
   );
 };
