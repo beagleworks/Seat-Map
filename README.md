@@ -21,7 +21,7 @@
 
 ## プロジェクト構成
 
-```
+```text
 Seat-Map/
 ├── Spec.md                 # 要件定義
 ├── Design.md               # 実装仕様
