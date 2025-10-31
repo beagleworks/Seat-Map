@@ -7,15 +7,26 @@ import styles from './Toolbar.module.css';
 export const Toolbar: React.FC = () => {
   const {
     name,
+    tables,
+    selectedTableId,
+    selectedChairId,
     setVenueName,
     addTable,
     exportData,
     importData,
     reset,
+    openTableModal,
+    openChairModal,
   } = useVenueStore();
 
   const [isEditingName, setIsEditingName] = useState(false);
   const [venueName, setVenueNameLocal] = useState(name);
+
+  // Get selected table and chair info
+  const selectedTable = selectedTableId ? tables.find(t => t.id === selectedTableId) : null;
+  const selectedChair = selectedTableId && selectedChairId
+    ? tables.find(t => t.id === selectedTableId)?.chairs.find(c => c.id === selectedChairId)
+    : null;
 
   const handleSaveName = () => {
     setVenueName(venueName);
@@ -82,6 +93,31 @@ export const Toolbar: React.FC = () => {
         <Button onClick={() => addTable('rectangle')} variant="secondary">
           長方形テーブル
         </Button>
+      </div>
+
+      <div className={styles.section}>
+        <h3 className={styles.sectionTitle}>選択項目を編集</h3>
+        {selectedTable && (
+          <Button
+            onClick={openTableModal}
+            variant="primary"
+          >
+            テーブル情報を編集
+          </Button>
+        )}
+        {selectedChair && (
+          <Button
+            onClick={openChairModal}
+            variant="primary"
+          >
+            メンバー情報を編集
+          </Button>
+        )}
+        {!selectedTable && !selectedChair && (
+          <p style={{ color: '#6b7280', fontSize: '14px', margin: '8px 0' }}>
+            テーブルまたは椅子を<br />クリックして選択してください
+          </p>
+        )}
       </div>
 
       <div className={styles.section}>

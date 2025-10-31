@@ -6,10 +6,11 @@ import { CHAIR_SIZE, COLORS } from '../../constants';
 interface ChairProps {
   chair: ChairType;
   table: Table;
-  onChairClick: (chair: ChairType) => void;
+  isSelected: boolean;
+  onChairClick: (tableId: string, chairId: string) => void;
 }
 
-export const Chair: React.FC<ChairProps> = memo(({ chair, table, onChairClick }) => {
+export const Chair: React.FC<ChairProps> = memo(({ chair, table, isSelected, onChairClick }) => {
   const position = calculateChairPosition(
     table.position,
     table.shape,
@@ -19,7 +20,7 @@ export const Chair: React.FC<ChairProps> = memo(({ chair, table, onChairClick })
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onChairClick(chair);
+    onChairClick(table.id, chair.id);
   };
 
   return (
@@ -30,8 +31,8 @@ export const Chair: React.FC<ChairProps> = memo(({ chair, table, onChairClick })
         cy={position.y}
         r={CHAIR_SIZE / 2}
         fill={chair.member ? COLORS.chairOccupied : COLORS.chairEmpty}
-        stroke={COLORS.chairBorder}
-        strokeWidth="2"
+        stroke={isSelected ? '#3b82f6' : COLORS.chairBorder}
+        strokeWidth={isSelected ? '3' : '2'}
       />
 
       {/* メンバー情報表示 */}

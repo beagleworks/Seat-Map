@@ -11,11 +11,13 @@ import {
 
 interface TableProps {
   table: TableType;
+  isSelected: boolean;
+  selectedChairId: string | null;
   onTableClick: (table: TableType) => void;
-  onChairClick: (chair: ChairType) => void;
+  onChairClick: (tableId: string, chairId: string) => void;
 }
 
-export const Table: React.FC<TableProps> = memo(({ table, onTableClick, onChairClick }) => {
+export const Table: React.FC<TableProps> = memo(({ table, isSelected, selectedChairId, onTableClick, onChairClick }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const updateTablePosition = useVenueStore((state) => state.updateTablePosition);
@@ -24,11 +26,8 @@ export const Table: React.FC<TableProps> = memo(({ table, onTableClick, onChairC
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   const handleMouseDown = (e: React.MouseEvent<SVGGElement>) => {
-    // ダブルクリックでモーダルを開く
-    if (e.detail === 2) {
-      onTableClick(table);
-      return;
-    }
+    // Single click to select table
+    onTableClick(table);
 
     const svg = (e.target as SVGElement).ownerSVGElement;
     if (svg) {
@@ -95,8 +94,8 @@ export const Table: React.FC<TableProps> = memo(({ table, onTableClick, onChairC
             cy={table.position.y}
             r={CIRCLE_TABLE_RADIUS}
             fill={COLORS.tableBackground}
-            stroke={COLORS.tableBorder}
-            strokeWidth="2"
+            stroke={isSelected ? COLORS.primary : COLORS.tableBorder}
+            strokeWidth={isSelected ? '3' : '2'}
             style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1))' }}
           />
         ) : (
@@ -107,8 +106,8 @@ export const Table: React.FC<TableProps> = memo(({ table, onTableClick, onChairC
             height={RECT_TABLE_HEIGHT}
             rx="10"
             fill={COLORS.tableBackground}
-            stroke={COLORS.tableBorder}
-            strokeWidth="2"
+            stroke={isSelected ? COLORS.primary : COLORS.tableBorder}
+            strokeWidth={isSelected ? '3' : '2'}
             style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1))' }}
           />
         )}
@@ -130,7 +129,13 @@ export const Table: React.FC<TableProps> = memo(({ table, onTableClick, onChairC
 
       {/* 椅子 */}
       {table.chairs.map((chair) => (
-        <Chair key={chair.id} chair={chair} table={table} onChairClick={onChairClick} />
+        <Chair
+          key={chair.id}
+          chair={chair}
+          table={table}
+          isSelected={selectedChairId === chair.id}
+          onChairClick={onChairClick}
+        />
       ))}
     </>
   );
