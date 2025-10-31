@@ -91,7 +91,7 @@
 ## 5. データモデル
 
 ### 5.1 Venue（会場）
-```
+```typescript
 {
   id: string
   name: string
@@ -100,7 +100,7 @@
 ```
 
 ### 5.2 Table（テーブル）
-```
+```typescript
 {
   id: string
   name?: string
@@ -111,7 +111,7 @@
 ```
 
 ### 5.3 Chair（椅子）
-```
+```typescript
 {
   id: string
   tableId: string
@@ -121,7 +121,7 @@
 ```
 
 ### 5.4 Member（メンバー）
-```
+```typescript
 {
   id: string
   name: string

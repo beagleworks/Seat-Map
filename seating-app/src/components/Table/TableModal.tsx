@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Table } from '../../types';
 import { useVenueStore } from '../../store/venueStore';
 import { Modal } from '../Common/Modal';
@@ -20,6 +20,10 @@ export const TableModal: React.FC<TableModalProps> = ({
   const { updateTableName, updateChairCount, removeTable } = useVenueStore();
   const [tableName, setTableName] = useState(table.name || '');
   const [chairCount, setChairCount] = useState(table.chairCount);
+  useEffect(() => {
+    setTableName(table.name || '');
+    setChairCount(table.chairCount);
+  }, [table.id]);
 
   const handleSave = () => {
     updateTableName(table.id, tableName);

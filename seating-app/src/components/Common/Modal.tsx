@@ -34,12 +34,38 @@ export const Modal: React.FC<ModalProps> = ({
 
   if (!isOpen) return null;
 
+  const titleId = React.useId();
+  const modalRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      const previousActiveElement = document.activeElement as HTMLElement;
+      modalRef.current.focus();
+      
+      return () => {
+        previousActiveElement?.focus();
+      };
+    }
+  }, [isOpen]);
+
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div 
+        className={styles.modal} 
+        onClick={(e) => e.stopPropagation()}
+        ref={modalRef}
+        tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+      >
         <div className={styles.header}>
-          <h2 className={styles.title}>{title}</h2>
-          <button className={styles.closeButton} onClick={onClose}>
+          <h2 className={styles.title} id={titleId}>{title}</h2>
+          <button 
+            className={styles.closeButton} 
+            onClick={onClose}
+            aria-label="Close modal"
+          >
             ×
           </button>
         </div>
