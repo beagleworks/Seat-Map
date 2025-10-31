@@ -11,7 +11,16 @@ export function exportToJson(venue: Venue): string {
  * JSON文字列から座席表データをインポート
  */
 export function importFromJson(json: string): Venue {
-  return JSON.parse(json);
+  try {
+    const data = JSON.parse(json);
+    // Basic validation
+    if (!data.id || !data.name || !Array.isArray(data.tables)) {
+      throw new Error('Invalid venue data structure');
+    }
+    return data as Venue;
+  } catch (error) {
+    throw new Error(`Failed to import venue data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
 }
 
 /**

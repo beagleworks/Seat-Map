@@ -3,13 +3,14 @@ import { useVenueStore } from '../../store/venueStore';
 import { Table } from '../Table/Table';
 import { TableModal } from '../Table/TableModal';
 import { ChairModal } from '../Chair/ChairModal';
-import type { Table as TableType, Chair as ChairType } from '../../types';
 import styles from './VenueCanvas.module.css';
 
 export const VenueCanvas: React.FC = () => {
   const { tables } = useVenueStore();
-  const [selectedTable, setSelectedTable] = useState<TableType | null>(null);
-  const [selectedChair, setSelectedChair] = useState<ChairType | null>(null);
+  const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
+  const [selectedChairId, setSelectedChairId] = useState<string | null>(null);
+  const selectedTable = selectedTableId ? tables.find(t => t.id === selectedTableId) ?? null : null;
+  const selectedChair = selectedTableId && selectedChairId ? tables.find(t => t.id === selectedTableId)?.chairs.find(c => c.id === selectedChairId) ?? null : null; 
 
   return (
     <div className={styles.canvas}>
@@ -37,8 +38,8 @@ export const VenueCanvas: React.FC = () => {
           <Table
             key={table.id}
             table={table}
-            onTableClick={setSelectedTable}
-            onChairClick={setSelectedChair}
+            onTableClick={(table) => setSelectedTableId(table.id)} 
+            onChairClick={(chair) => setSelectedChairId(chair.id)}
           />
         ))}
       </svg>
@@ -54,7 +55,7 @@ export const VenueCanvas: React.FC = () => {
         <TableModal
           table={selectedTable}
           isOpen={true}
-          onClose={() => setSelectedTable(null)}
+          onClose={() => setSelectedTableId(null)}
         />
       )}
 
@@ -62,7 +63,7 @@ export const VenueCanvas: React.FC = () => {
         <ChairModal
           chair={selectedChair}
           isOpen={true}
-          onClose={() => setSelectedChair(null)}
+          onClose={() => setSelectedChairId(null)}
         />
       )}
     </div>
