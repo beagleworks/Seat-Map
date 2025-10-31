@@ -54,7 +54,19 @@ export const useVenueStore = create<VenueState>()(
       },
 
       removeTable: (tableId: string) => {
-        set({ tables: get().tables.filter((t) => t.id !== tableId) });
+        set((state) => {
+          const tables = state.tables.filter((t) => t.id !== tableId);
+          if (state.selectedTableId !== tableId) {
+            return { tables };
+          }
+          return {
+            tables,
+            selectedTableId: null,
+            selectedChairId: null,
+            isTableModalOpen: false,
+            isChairModalOpen: false,
+          };
+        });
       },
 
       updateTablePosition: (tableId: string, position: Position) => {

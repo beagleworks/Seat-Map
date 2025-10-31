@@ -94,7 +94,7 @@ export const Table: React.FC<TableProps> = memo(({ table, isSelected, selectedCh
             cy={table.position.y}
             r={CIRCLE_TABLE_RADIUS}
             fill={COLORS.tableBackground}
-            stroke={isSelected ? '#3b82f6' : COLORS.tableBorder}
+            stroke={isSelected ? COLORS.primary : COLORS.tableBorder}
             strokeWidth={isSelected ? '3' : '2'}
             style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1))' }}
           />
@@ -106,7 +106,7 @@ export const Table: React.FC<TableProps> = memo(({ table, isSelected, selectedCh
             height={RECT_TABLE_HEIGHT}
             rx="10"
             fill={COLORS.tableBackground}
-            stroke={isSelected ? '#3b82f6' : COLORS.tableBorder}
+            stroke={isSelected ? COLORS.primary : COLORS.tableBorder}
             strokeWidth={isSelected ? '3' : '2'}
             style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1))' }}
           />
