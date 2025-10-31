@@ -9,10 +9,9 @@ export function useSelectedEntities() {
   }, [selectedTableId, tables]);  
 
   const selectedChair = useMemo(() => {  
-    if (!selectedTableId || !selectedChairId) return null;  
-    const table = tables.find(t => t.id === selectedTableId);  
-    return table?.chairs.find(c => c.id === selectedChairId) ?? null;
-  }, [selectedTableId, selectedChairId, tables]);  
+    if (!selectedTableId || !selectedChairId) return null;   
+    return selectedTable?.chairs.find(c => c.id === selectedChairId) ?? null;
+  }, [selectedTableId, selectedChairId, selectedTable]);  
 
   return { selectedTable, selectedChair };  
 }  
