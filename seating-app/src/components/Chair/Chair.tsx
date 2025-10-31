@@ -33,22 +33,42 @@ export const Chair: React.FC<ChairProps> = ({ chair, table, onChairClick }) => {
         strokeWidth="2"
       />
 
-      {/* メンバー名 */}
+      {/* メンバー情報表示 */}
       {chair.member && (
-        <text
-          x={position.x}
-          y={position.y}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="white"
-          fontSize="10"
-          fontWeight="600"
-          pointerEvents="none"
-        >
-          {chair.member.name.length > 4
-            ? chair.member.name.substring(0, 3) + '...'
-            : chair.member.name}
-        </text>
+        <>
+          {/* 名前（椅子の下） */}
+          <text
+            x={position.x}
+            y={position.y + CHAIR_SIZE / 2 + 15}
+            textAnchor="middle"
+            fill={COLORS.text}
+            fontSize="11"
+            fontWeight="600"
+            pointerEvents="none"
+            style={{
+              textShadow: '0 0 3px white, 0 0 3px white, 0 0 3px white',
+            }}
+          >
+            {chair.member.name}
+          </text>
+
+          {/* XID（名前のさらに下） */}
+          {chair.member.xId && (
+            <text
+              x={position.x}
+              y={position.y + CHAIR_SIZE / 2 + 28}
+              textAnchor="middle"
+              fill={COLORS.textLight}
+              fontSize="9"
+              pointerEvents="none"
+              style={{
+                textShadow: '0 0 3px white, 0 0 3px white, 0 0 3px white',
+              }}
+            >
+              {chair.member.xId.startsWith('@') ? chair.member.xId : `@${chair.member.xId}`}
+            </text>
+          )}
+        </>
       )}
     </g>
   );
