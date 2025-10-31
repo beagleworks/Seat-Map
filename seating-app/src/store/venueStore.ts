@@ -32,11 +32,8 @@ export const useVenueStore = create<VenueState>()(
           chairCount: 4,
           chairs: [],
         };
-          shape,
-          position: { x: 200 + tables.length * 100, y: 200 },
-          chairCount: 4,
-          chairs: [],
-        };
+
+        // 椅子を初期化
 
         // 椅子を初期化
         const chairs: Chair[] = [];
