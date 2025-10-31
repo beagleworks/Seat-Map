@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import type { Table as TableType, Chair as ChairType } from '../../types';
 import { useVenueStore } from '../../store/venueStore';
 import { Chair } from '../Chair/Chair';
@@ -15,10 +15,13 @@ interface TableProps {
   onChairClick: (chair: ChairType) => void;
 }
 
-export const Table: React.FC<TableProps> = ({ table, onTableClick, onChairClick }) => {
+export const Table: React.FC<TableProps> = memo(({ table, onTableClick, onChairClick }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const updateTablePosition = useVenueStore((state) => state.updateTablePosition);
+
+  // Cache SVG reference to avoid expensive DOM queries on every mousemove
+  const svgRef = useRef<SVGSVGElement | null>(null);
 
   const handleMouseDown = (e: React.MouseEvent<SVGGElement>) => {
     // ダブルクリックでモーダルを開く
@@ -27,9 +30,11 @@ export const Table: React.FC<TableProps> = ({ table, onTableClick, onChairClick 
       return;
     }
 
-    setIsDragging(true);
     const svg = (e.target as SVGElement).ownerSVGElement;
     if (svg) {
+      // Cache the SVG reference for use during dragging
+      svgRef.current = svg;
+
       const pt = svg.createSVGPoint();
       pt.x = e.clientX;
       pt.y = e.clientY;
@@ -38,13 +43,16 @@ export const Table: React.FC<TableProps> = ({ table, onTableClick, onChairClick 
         x: svgPoint.x - table.position.x,
         y: svgPoint.y - table.position.y,
       });
+
+      setIsDragging(true);
     }
   };
 
   useEffect(() => {
     if (isDragging) {
       const handleGlobalMouseMove = (e: MouseEvent) => {
-        const svg = document.querySelector('svg');
+        // Use cached SVG reference instead of expensive DOM query
+        const svg = svgRef.current;
         if (!svg) return;
 
         const pt = svg.createSVGPoint();
@@ -60,6 +68,8 @@ export const Table: React.FC<TableProps> = ({ table, onTableClick, onChairClick 
 
       const handleGlobalMouseUp = () => {
         setIsDragging(false);
+        // Clear the cached reference when dragging ends
+        svgRef.current = null;
       };
 
       document.addEventListener('mousemove', handleGlobalMouseMove);
@@ -124,4 +134,4 @@ export const Table: React.FC<TableProps> = ({ table, onTableClick, onChairClick 
       ))}
     </>
   );
-};
+});
