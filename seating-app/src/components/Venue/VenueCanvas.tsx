@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useVenueStore } from '../../store/venueStore';
 import { Table } from '../Table/Table';
 import { TableModal } from '../Table/TableModal';
@@ -6,9 +6,17 @@ import { ChairModal } from '../Chair/ChairModal';
 import styles from './VenueCanvas.module.css';
 
 export const VenueCanvas: React.FC = () => {
-  const { tables } = useVenueStore();
-  const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
-  const [selectedChairId, setSelectedChairId] = useState<string | null>(null);
+  const {
+    tables,
+    selectedTableId,
+    selectedChairId,
+    isTableModalOpen,
+    isChairModalOpen,
+    setSelectedTable,
+    setSelectedChair,
+    closeTableModal,
+    closeChairModal,
+  } = useVenueStore();
 
   // Memoize table lookup to avoid O(n) search on every render
   const selectedTable = useMemo(() => {
@@ -24,12 +32,12 @@ export const VenueCanvas: React.FC = () => {
 
   // Memoize click handlers to prevent unnecessary re-renders of child components
   const handleTableClick = useCallback((table: { id: string }) => {
-    setSelectedTableId(table.id);
-  }, []);
+    setSelectedTable(table.id);
+  }, [setSelectedTable]);
 
-  const handleChairClick = useCallback((chair: { id: string }) => {
-    setSelectedChairId(chair.id);
-  }, []); 
+  const handleChairClick = useCallback((tableId: string, chairId: string) => {
+    setSelectedChair(tableId, chairId);
+  }, [setSelectedChair]); 
 
   return (
     <div className={styles.canvas}>
@@ -57,6 +65,8 @@ export const VenueCanvas: React.FC = () => {
           <Table
             key={table.id}
             table={table}
+            isSelected={selectedTableId === table.id}
+            selectedChairId={selectedChairId}
             onTableClick={handleTableClick}
             onChairClick={handleChairClick}
           />
@@ -73,16 +83,16 @@ export const VenueCanvas: React.FC = () => {
       {selectedTable && (
         <TableModal
           table={selectedTable}
-          isOpen={true}
-          onClose={() => setSelectedTableId(null)}
+          isOpen={isTableModalOpen}
+          onClose={closeTableModal}
         />
       )}
 
       {selectedChair && (
         <ChairModal
           chair={selectedChair}
-          isOpen={true}
-          onClose={() => setSelectedChairId(null)}
+          isOpen={isChairModalOpen}
+          onClose={closeChairModal}
         />
       )}
     </div>

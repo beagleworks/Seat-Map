@@ -34,6 +34,12 @@ export interface Venue {
 }
 
 export interface VenueState extends Venue {
+  // Selection state
+  selectedTableId: string | null;
+  selectedChairId: string | null;
+  isTableModalOpen: boolean;
+  isChairModalOpen: boolean;
+
   // Actions
   setVenueName: (name: string) => void;
   addTable: (shape: TableShape) => void;
@@ -47,4 +53,12 @@ export interface VenueState extends Venue {
   exportData: () => string;
   importData: (json: string) => void;
   reset: () => void;
+
+  // Selection actions
+  setSelectedTable: (tableId: string | null) => void;
+  setSelectedChair: (tableId: string | null, chairId: string | null) => void;
+  openTableModal: () => void;
+  openChairModal: () => void;
+  closeTableModal: () => void;
+  closeChairModal: () => void;
 }

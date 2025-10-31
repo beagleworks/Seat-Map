@@ -7,6 +7,10 @@ const initialState = {
   id: 'default-venue',
   name: '会場',
   tables: [],
+  selectedTableId: null,
+  selectedChairId: null,
+  isTableModalOpen: false,
+  isChairModalOpen: false,
 };
 
 export const useVenueStore = create<VenueState>()(
@@ -156,6 +160,37 @@ export const useVenueStore = create<VenueState>()(
 
       reset: () => {
         set(initialState);
+      },
+
+      // Selection actions
+      setSelectedTable: (tableId: string | null) => {
+        set({
+          selectedTableId: tableId,
+          selectedChairId: null, // Clear chair selection when table is selected
+        });
+      },
+
+      setSelectedChair: (tableId: string | null, chairId: string | null) => {
+        set({
+          selectedTableId: tableId,
+          selectedChairId: chairId,
+        });
+      },
+
+      openTableModal: () => {
+        set({ isTableModalOpen: true });
+      },
+
+      openChairModal: () => {
+        set({ isChairModalOpen: true });
+      },
+
+      closeTableModal: () => {
+        set({ isTableModalOpen: false });
+      },
+
+      closeChairModal: () => {
+        set({ isChairModalOpen: false });
       },
     }),
     {
