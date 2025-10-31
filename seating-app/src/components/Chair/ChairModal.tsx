@@ -68,7 +68,11 @@ export const ChairModal: React.FC<ChairModalProps> = ({
     }
 
     const member: Member = {
-      id: chair.member?.id || `member-${Date.now()}`,
+    const member: Member = {
+      id: chair.member?.id || `member-${crypto.randomUUID()}`,
+      name: name.trim(),
+      xId: xId.trim() || undefined,
+    };
       name: name.trim(),
       xId: xId.trim() || undefined,
     };
