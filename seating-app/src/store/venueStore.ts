@@ -26,7 +26,12 @@ export const useVenueStore = create<VenueState>()(
         }
 
         const newTable: Table = {
-          id: `table-${Date.now()}`,
+          id: `table-${crypto.randomUUID()}`,
+          shape,
+          position: { x: 200 + tables.length * 100, y: 200 },
+          chairCount: 4,
+          chairs: [],
+        };
           shape,
           position: { x: 200 + tables.length * 100, y: 200 },
           chairCount: 4,
