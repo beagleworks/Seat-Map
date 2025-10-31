@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useVenueStore } from '../../store/venueStore';
+import { useSelectedEntities } from '../../hooks/useSelectedEntities';
 import { Button } from '../Common/Button';
 import { downloadJson, generateFilename } from '../../utils/storage';
 import styles from './Toolbar.module.css';
@@ -7,9 +8,6 @@ import styles from './Toolbar.module.css';
 export const Toolbar: React.FC = () => {
   const {
     name,
-    tables,
-    selectedTableId,
-    selectedChairId,
     setVenueName,
     addTable,
     exportData,
@@ -22,11 +20,7 @@ export const Toolbar: React.FC = () => {
   const [isEditingName, setIsEditingName] = useState(false);
   const [venueName, setVenueNameLocal] = useState(name);
 
-  // Get selected table and chair info
-  const selectedTable = selectedTableId ? tables.find(t => t.id === selectedTableId) : null;
-  const selectedChair = selectedTableId && selectedChairId
-    ? tables.find(t => t.id === selectedTableId)?.chairs.find(c => c.id === selectedChairId)
-    : null;
+  const { selectedTable, selectedChair } = useSelectedEntities();
 
   const handleSaveName = () => {
     setVenueName(venueName);
