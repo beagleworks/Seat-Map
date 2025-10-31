@@ -5,6 +5,7 @@
 ## 前提
 
 このアプリケーションは Claude Code on the webの実験のために作成されました
+https://beagleworks.github.io/Seat-Map/seating-app/
 
 ## 機能
 
