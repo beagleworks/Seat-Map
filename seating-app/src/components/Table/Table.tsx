@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, memo } from 'react';
-import type { Table as TableType, Chair as ChairType } from '../../types';
+import type { Table as TableType } from '../../types';
 import { useVenueStore } from '../../store/venueStore';
 import { Chair } from '../Chair/Chair';
 import {
