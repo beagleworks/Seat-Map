@@ -1,24 +1,3 @@
-import { useState } from 'react';
-import type { Chair, Member } from '../../types';
-import { useVenueStore } from '../../store/venueStore';
-import { Modal } from '../Common/Modal';
-import { Button } from '../Common/Button';
-import { Input } from '../Common/Input';
-import { validateMemberName, validateXId } from '../../utils/validation';
-import styles from './ChairModal.module.css';
-
-interface ChairModalProps {
-  chair: Chair;
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export const ChairModal: React.FC<ChairModalProps> = ({
-  chair,
-  isOpen,
-  onClose,
-}) => {
-  const { assignMember, removeMember } = useVenueStore();
 import { useState, useEffect } from 'react';
 import type { Chair, Member } from '../../types';
 import { useVenueStore } from '../../store/venueStore';
@@ -68,11 +47,7 @@ export const ChairModal: React.FC<ChairModalProps> = ({
     }
 
     const member: Member = {
-    const member: Member = {
       id: chair.member?.id || `member-${crypto.randomUUID()}`,
-      name: name.trim(),
-      xId: xId.trim() || undefined,
-    };
       name: name.trim(),
       xId: xId.trim() || undefined,
     };
