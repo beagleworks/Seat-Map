@@ -19,8 +19,19 @@ export const ChairModal: React.FC<ChairModalProps> = ({
   onClose,
 }) => {
   const { assignMember, removeMember } = useVenueStore();
+import { useState, useEffect } from 'react';
+
   const [name, setName] = useState(chair.member?.name || '');
   const [xId, setXId] = useState(chair.member?.xId || '');
+  
+  useEffect(() => {
+    if (isOpen) {
+      setName(chair.member?.name || '');
+      setXId(chair.member?.xId || '');
+      setNameError('');
+      setXIdError('');
+    }
+  }, [chair, isOpen]);
   const [nameError, setNameError] = useState('');
   const [xIdError, setXIdError] = useState('');
 
