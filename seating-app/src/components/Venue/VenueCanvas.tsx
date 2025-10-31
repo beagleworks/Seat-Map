@@ -1,8 +1,6 @@
-import { useMemo, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useVenueStore } from '../../store/venueStore';
 import { Table } from '../Table/Table';
-import { TableModal } from '../Table/TableModal';
-import { ChairModal } from '../Chair/ChairModal';
 import styles from './VenueCanvas.module.css';
 
 export const VenueCanvas: React.FC = () => {
@@ -10,25 +8,9 @@ export const VenueCanvas: React.FC = () => {
     tables,
     selectedTableId,
     selectedChairId,
-    isTableModalOpen,
-    isChairModalOpen,
     setSelectedTable,
     setSelectedChair,
-    closeTableModal,
-    closeChairModal,
   } = useVenueStore();
-
-  // Memoize table lookup to avoid O(n) search on every render
-  const selectedTable = useMemo(() => {
-    return selectedTableId ? tables.find(t => t.id === selectedTableId) ?? null : null;
-  }, [selectedTableId, tables]);
-
-  // Memoize chair lookup to avoid nested find operations on every render
-  const selectedChair = useMemo(() => {
-    if (!selectedTableId || !selectedChairId) return null;
-    const table = tables.find(t => t.id === selectedTableId);
-    return table?.chairs.find(c => c.id === selectedChairId) ?? null;
-  }, [selectedTableId, selectedChairId, tables]);
 
   // Memoize click handlers to prevent unnecessary re-renders of child components
   const handleTableClick = useCallback((table: { id: string }) => {
@@ -79,22 +61,6 @@ export const VenueCanvas: React.FC = () => {
         </div>
       )}
 
-      {/* モーダル（SVGの外） */}
-      {selectedTable && (
-        <TableModal
-          table={selectedTable}
-          isOpen={isTableModalOpen}
-          onClose={closeTableModal}
-        />
-      )}
-
-      {selectedChair && (
-        <ChairModal
-          chair={selectedChair}
-          isOpen={isChairModalOpen}
-          onClose={closeChairModal}
-        />
-      )}
     </div>
   );
 };

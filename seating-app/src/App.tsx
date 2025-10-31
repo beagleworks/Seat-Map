@@ -3,24 +3,18 @@ import { VenueCanvas } from './components/Venue/VenueCanvas';
 import { TableModal } from './components/Table/TableModal';
 import { ChairModal } from './components/Chair/ChairModal';
 import { useVenueStore } from './store/venueStore';
+import { useSelectedEntities } from './hooks/useSelectedEntities';
 import './App.css';
 
 function App() {
   const {
-    tables,
-    selectedTableId,
-    selectedChairId,
     isTableModalOpen,
     isChairModalOpen,
     closeTableModal,
     closeChairModal,
   } = useVenueStore();
 
-  // Get selected table and chair
-  const selectedTable = selectedTableId ? tables.find(t => t.id === selectedTableId) : null;
-  const selectedChair = selectedTableId && selectedChairId
-    ? tables.find(t => t.id === selectedTableId)?.chairs.find(c => c.id === selectedChairId)
-    : null;
+  const { selectedTable, selectedChair } = useSelectedEntities();
 
   return (
     <div className="app">
