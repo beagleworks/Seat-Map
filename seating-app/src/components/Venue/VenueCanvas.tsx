@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useVenueStore } from '../../store/venueStore';
 import { Table } from '../Table/Table';
 import { TableModal } from '../Table/TableModal';
@@ -9,8 +9,27 @@ export const VenueCanvas: React.FC = () => {
   const { tables } = useVenueStore();
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
   const [selectedChairId, setSelectedChairId] = useState<string | null>(null);
-  const selectedTable = selectedTableId ? tables.find(t => t.id === selectedTableId) ?? null : null;
-  const selectedChair = selectedTableId && selectedChairId ? tables.find(t => t.id === selectedTableId)?.chairs.find(c => c.id === selectedChairId) ?? null : null; 
+
+  // Memoize table lookup to avoid O(n) search on every render
+  const selectedTable = useMemo(() => {
+    return selectedTableId ? tables.find(t => t.id === selectedTableId) ?? null : null;
+  }, [selectedTableId, tables]);
+
+  // Memoize chair lookup to avoid nested find operations on every render
+  const selectedChair = useMemo(() => {
+    if (!selectedTableId || !selectedChairId) return null;
+    const table = tables.find(t => t.id === selectedTableId);
+    return table?.chairs.find(c => c.id === selectedChairId) ?? null;
+  }, [selectedTableId, selectedChairId, tables]);
+
+  // Memoize click handlers to prevent unnecessary re-renders of child components
+  const handleTableClick = useCallback((table: { id: string }) => {
+    setSelectedTableId(table.id);
+  }, []);
+
+  const handleChairClick = useCallback((chair: { id: string }) => {
+    setSelectedChairId(chair.id);
+  }, []); 
 
   return (
     <div className={styles.canvas}>
@@ -38,8 +57,8 @@ export const VenueCanvas: React.FC = () => {
           <Table
             key={table.id}
             table={table}
-            onTableClick={(table) => setSelectedTableId(table.id)} 
-            onChairClick={(chair) => setSelectedChairId(chair.id)}
+            onTableClick={handleTableClick}
+            onChairClick={handleChairClick}
           />
         ))}
       </svg>

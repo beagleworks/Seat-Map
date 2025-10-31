@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { Chair as ChairType, Table } from '../../types';
 import { calculateChairPosition } from '../../utils/geometry';
 import { CHAIR_SIZE, COLORS } from '../../constants';
@@ -8,7 +9,7 @@ interface ChairProps {
   onChairClick: (chair: ChairType) => void;
 }
 
-export const Chair: React.FC<ChairProps> = ({ chair, table, onChairClick }) => {
+export const Chair: React.FC<ChairProps> = memo(({ chair, table, onChairClick }) => {
   const position = calculateChairPosition(
     table.position,
     table.shape,
@@ -72,4 +73,4 @@ export const Chair: React.FC<ChairProps> = ({ chair, table, onChairClick }) => {
       )}
     </g>
   );
-};
+});
