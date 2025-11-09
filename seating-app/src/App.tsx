@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Toolbar } from './components/Toolbar/Toolbar';
 import { VenueCanvas } from './components/Venue/VenueCanvas';
 import { TableModal } from './components/Table/TableModal';
@@ -15,10 +16,22 @@ function App() {
   } = useVenueStore();
 
   const { selectedTable, selectedChair } = useSelectedEntities();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="app">
-      <Toolbar />
+      <button
+        className="mobile-menu-toggle"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        aria-label="Toggle menu"
+      >
+        <span className="hamburger-icon"></span>
+      </button>
+
+      <Toolbar
+        isMobileOpen={isMobileMenuOpen}
+        onMobileClose={() => setIsMobileMenuOpen(false)}
+      />
       <VenueCanvas />
 
       {/* Render modals */}

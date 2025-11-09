@@ -5,7 +5,12 @@ import { Button } from '../Common/Button';
 import { downloadJson, generateFilename } from '../../utils/storage';
 import styles from './Toolbar.module.css';
 
-export const Toolbar: React.FC = () => {
+interface ToolbarProps {
+  isMobileOpen?: boolean;
+  onMobileClose?: () => void;
+}
+
+export const Toolbar: React.FC<ToolbarProps> = ({ isMobileOpen = false, onMobileClose }) => {
   const {
     name,
     setVenueName,
@@ -56,8 +61,17 @@ export const Toolbar: React.FC = () => {
     }
   };
 
+  const handleActionClick = () => {
+    // Close mobile menu when an action is performed
+    if (onMobileClose) {
+      setTimeout(() => onMobileClose(), 300);
+    }
+  };
+
   return (
-    <div className={styles.toolbar}>
+    <>
+      {isMobileOpen && <div className={styles.overlay} onClick={onMobileClose} />}
+      <div className={`${styles.toolbar} ${isMobileOpen ? styles.mobileOpen : ''}`}>
       <div className={styles.section}>
         <h1 className={styles.title}>座席表</h1>
 
@@ -81,10 +95,10 @@ export const Toolbar: React.FC = () => {
 
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>テーブルを追加</h3>
-        <Button onClick={() => addTable('circle')}>
+        <Button onClick={() => { addTable('circle'); handleActionClick(); }}>
           円形テーブル
         </Button>
-        <Button onClick={() => addTable('rectangle')} variant="secondary">
+        <Button onClick={() => { addTable('rectangle'); handleActionClick(); }} variant="secondary">
           長方形テーブル
         </Button>
       </div>
@@ -93,7 +107,7 @@ export const Toolbar: React.FC = () => {
         <h3 className={styles.sectionTitle}>選択項目を編集</h3>
         {selectedTable && (
           <Button
-            onClick={openTableModal}
+            onClick={() => { openTableModal(); handleActionClick(); }}
             variant="primary"
           >
             テーブル情報を編集
@@ -101,7 +115,7 @@ export const Toolbar: React.FC = () => {
         )}
         {selectedChair && (
           <Button
-            onClick={openChairModal}
+            onClick={() => { openChairModal(); handleActionClick(); }}
             variant="primary"
           >
             メンバー情報を編集
@@ -126,6 +140,7 @@ export const Toolbar: React.FC = () => {
           リセット
         </Button>
       </div>
-    </div>
+      </div>
+    </>
   );
 };

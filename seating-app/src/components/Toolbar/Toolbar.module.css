@@ -72,3 +72,69 @@
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
+
+.overlay {
+  display: none;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .toolbar.mobileOpen {
+    transform: translateX(0);
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+}
+
+/* Tablet styles - smaller toolbar */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .toolbar {
+    width: 220px;
+    min-width: 220px;
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .sectionTitle {
+    font-size: 0.8rem;
+  }
+}
+
+/* Small mobile - even smaller buttons and text */
+@media (max-width: 480px) {
+  .toolbar {
+    width: 280px;
+    min-width: 280px;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .section {
+    gap: 0.5rem;
+  }
+}

@@ -49,3 +49,22 @@
 .danger:hover:not(:disabled) {
   background-color: #dc2626;
 }
+
+/* Mobile optimization - larger touch targets */
+@media (max-width: 768px) {
+  .button {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9375rem;
+    /* Minimum touch target size for accessibility */
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
