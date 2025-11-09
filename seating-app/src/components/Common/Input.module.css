@@ -46,7 +46,7 @@
   .input {
     padding: 0.625rem 0.875rem;
     font-size: 1rem;
-    /* Prevent zoom on iOS when focusing inputs */
+    /* Prevent zoom on iOS: font-size must be ≥16px (1rem at root 16px) */
   }
 
   .label {

@@ -39,10 +39,6 @@ body {
     -webkit-text-size-adjust: 100%;
   }
 
-  /* Improve scrolling performance on mobile */
-  * {
-    -webkit-overflow-scrolling: touch;
-  }
 }
 
 /* Accessibility - Reduce motion for users who prefer it */

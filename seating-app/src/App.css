@@ -64,9 +64,3 @@
   }
 }
 
-/* Tablet styles */
-@media (max-width: 1024px) and (min-width: 769px) {
-  .app {
-    flex-direction: row;
-  }
-}
