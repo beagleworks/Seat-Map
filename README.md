@@ -2,9 +2,14 @@
 
 座席表を作成・管理できるWebアプリケーションです。会場にテーブルと椅子を配置し、各椅子にメンバーを割り当てることができます。
 
-## 前提
+## はじめに
 
-このアプリケーションは Claude Code on the webの実験のために作成されました
+このアプリケーションはClaude Code on the webを利用して作成されました。  
+また、Zennの記事用に作成したものです。  
+https://zenn.dev/beagle/articles/bc6ef88dd68615
+
+## サンプル
+
 https://beagleworks.github.io/Seat-Map/seating-app/
 
 ## 機能
