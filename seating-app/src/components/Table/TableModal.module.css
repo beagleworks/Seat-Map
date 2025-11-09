@@ -49,3 +49,36 @@
   padding-top: 1rem;
   border-top: 1px solid #e5e7eb;
 }
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .numberInput {
+    padding: 0.625rem 0.875rem;
+    font-size: 1rem;
+    /* Better for mobile input */
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    gap: 0.875rem;
+  }
+
+  .inputGroup {
+    gap: 0.375rem;
+  }
+
+  .info {
+    padding: 0.875rem;
+    font-size: 0.8125rem;
+  }
+}

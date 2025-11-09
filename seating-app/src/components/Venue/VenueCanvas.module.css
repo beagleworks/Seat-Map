@@ -22,3 +22,33 @@
   line-height: 1.75;
   pointer-events: none;
 }
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .canvas {
+    width: 100%;
+  }
+
+  .svg {
+    min-height: 400px;
+    /* Enable touch interactions */
+    touch-action: pan-x pan-y;
+  }
+
+  .emptyMessage {
+    font-size: 1rem;
+    padding: 1rem;
+    max-width: 80%;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .svg {
+    min-height: 300px;
+  }
+
+  .emptyMessage {
+    font-size: 0.875rem;
+  }
+}
